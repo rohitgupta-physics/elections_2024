@@ -1,1 +1,2 @@
 # implement poll_class
+# Licensing?

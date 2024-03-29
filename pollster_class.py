@@ -32,3 +32,8 @@ class Pollster:
                 raise ValueError(
                     f"Could not convert rating {self._data['numeric_grade']} into a float"
                 )
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Pollster):
+            return False
+        return self.rating_id == other.rating_id
