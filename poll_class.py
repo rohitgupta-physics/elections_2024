@@ -11,7 +11,7 @@ class Poll:
             raise ValueError("Not a modified csv file")
 
         self.new_poll_id: str = ""
-        self.data: list[dict[str, str]]
+        self.data: list[dict[str, str]] = list()
         self.pollster: Pollster
 
         # checks if pollster id matches any of the pollster from general_election_biden_vs_trump.csv
@@ -26,3 +26,21 @@ class Poll:
                     self.pollster = Pollster(row["pollster_rating_id"])
         if self.new_poll_id == "":
             raise ValueError("Not a valid poll id")
+
+    def get_pollster_name(self) -> str:
+        return self.pollster.get_name()
+
+    def get_candidate_names(self) -> list[str]:
+        return [row["candidate_name"] for row in self.data]
+
+    def get_polling_numbers(self) -> dict[str, float]:
+        ans: dict[str, float] = dict()
+        row: dict[str, str]
+        for row in self.data:
+            ans[row["candidate_name"]] = float(row["pct"])
+        return ans
+
+
+if __name__ == "__main__":
+    poll = Poll("865580", "general_election_biden_vs_trump_modified.csv")
+    print(poll.get_polling_numbers())

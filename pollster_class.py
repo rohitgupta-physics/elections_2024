@@ -37,3 +37,6 @@ class Pollster:
         if not isinstance(other, Pollster):
             return False
         return self.rating_id == other.rating_id
+
+    def get_name(self) -> str:
+        return self._data["pollster"]
