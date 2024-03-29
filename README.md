@@ -1,0 +1,1 @@
+Calculating polling averages using five thirty eight data
