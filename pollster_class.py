@@ -5,8 +5,11 @@ import typing
 class Pollster:
 
     def __init__(self, rating_id: str) -> None:
+
         self.rating_id: str = ""
         self._data: dict[str, str] = dict()
+
+        # checks if pollster rating id matches any of the pollster from pollster_rating.csv
         file: typing.TextIO
         with open("pollster_rating.csv") as file:
             reader: csv.DictReader[str] = csv.DictReader(file)
@@ -18,4 +21,14 @@ class Pollster:
                     break
         if self.rating_id == "":
             raise ValueError("Not a valid pollster rating id")
-        self.rating: str = self._data["numeric_grade"]
+
+        # if pollster rating is "NA", then we will treat it is 0
+        try:
+            self.rating: float = float(self._data["numeric_grade"])
+        except ValueError:
+            if self._data["numeric_grade"] == "NA":
+                self.rating = 0
+            else:
+                raise ValueError(
+                    f"Could not convert rating {self._data['numeric_grade']} into a float"
+                )
