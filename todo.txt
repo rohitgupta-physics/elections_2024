@@ -1,2 +1,3 @@
+# modify poll_class to use modified csv
 # implement poll_class
 # Licensing?
