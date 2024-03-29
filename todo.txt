@@ -1,2 +1,3 @@
+# print the list of pollster ratings
 # make pollster_class verify pollster_id
 # implement poll_class
