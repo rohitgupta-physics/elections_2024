@@ -18,21 +18,15 @@ def update_data() -> None:
     retrieve_data(pollster_rating, "pollster_rating.csv")
 
 
-def retrieve_data(url: str, output_file: str) -> None:
-    print(f"Updating {output_file} ...")
+def retrieve_data(url: str, output_name: str) -> None:
+    print(f"Updating {output_name} ...")
     session = requests.Session()
     response = session.get(url, stream=True)
-    with open(output_file, "wb") as file:
+    with open(output_name, "wb") as file:
         for chunk in response.iter_content(chunk_size=1024 * 1024):
             if chunk:
                 file.write(chunk)
-    with open("last_updated.txt", "r+") as update_file:
-        content: str = update_file.read()
-        update_file.seek(0)
-        update_file.write(
-            f"{output_file} updated at {datetime.now(timezone.utc)} UTC\n"
-        )
-        update_file.write(content)
+    update_last_updated(str(output_name))
 
 
 def create_new_pollid(in_csv: str) -> None:
@@ -66,8 +60,15 @@ def create_new_pollid(in_csv: str) -> None:
                 new_row: list[str] = list(row.values()) + [new_data]
                 out_writer.writerow(new_row)
 
-    with open("last_updated.txt", "a") as update_file:
-        update_file.write(f"{out_name} updated at {datetime.now(timezone.utc)} UTC\n")
+    update_last_updated(out_name)
+
+
+def update_last_updated(output_name: str) -> None:
+    with open("last_updated.txt", "r+") as file:
+        content = file.read()
+        file.seek(0)
+        file.write(f"{output_name} updated at {datetime.now(timezone.utc)} UTC\n")
+        file.write(content)
 
 
 def main() -> None:
