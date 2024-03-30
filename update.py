@@ -26,14 +26,18 @@ def retrieve_data(url: str, output_file: str) -> None:
         for chunk in response.iter_content(chunk_size=1024 * 1024):
             if chunk:
                 file.write(chunk)
-    with open("last_updated.txt", "a") as update_file:
+    with open("last_updated.txt", "r+") as update_file:
+        content: str = update_file.read()
+        update_file.seek(0)
         update_file.write(
             f"{output_file} updated at {datetime.now(timezone.utc)} UTC\n"
         )
+        update_file.write(content)
 
 
 def create_new_pollid(in_csv: str) -> None:
     out_name: str = in_csv.rstrip(".csv") + "_modified.csv"
+    print(f"Updating {out_name} ...")
 
     in_file: typing.TextIO
     out_file: typing.TextIO
