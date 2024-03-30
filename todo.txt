@@ -1,2 +1,2 @@
-# add documentation to poll_class
+# add documentation
 # Licensing?

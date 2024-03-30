@@ -1,4 +1,4 @@
-urllib.request
+requests
 typing
 csv
 datetime

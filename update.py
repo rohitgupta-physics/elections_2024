@@ -1,6 +1,7 @@
-import urllib.request
+import requests
 import csv
 import typing
+from datetime import datetime, timezone
 
 
 def update_data() -> None:
@@ -18,10 +19,17 @@ def update_data() -> None:
 
 
 def retrieve_data(url: str, output_file: str) -> None:
-    try:
-        urllib.request.urlretrieve(url, output_file)
-    except IOError:
-        print("Local file path does not exist")
+    print(f"Updating {output_file} ...")
+    session = requests.Session()
+    response = session.get(url, stream=True)
+    with open(output_file, "wb") as file:
+        for chunk in response.iter_content(chunk_size=1024 * 1024):
+            if chunk:
+                file.write(chunk)
+    with open("last_updated.txt", "a") as update_file:
+        update_file.write(
+            f"{output_file} updated at {datetime.now(timezone.utc)} UTC\n"
+        )
 
 
 def create_new_pollid(in_csv: str) -> None:
