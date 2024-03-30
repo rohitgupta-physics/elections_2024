@@ -65,3 +65,14 @@ def create_new_pollid(in_csv: str) -> None:
                 new_data: str = row["poll_id"] + str(current_index)
                 new_row: list[str] = list(row.values()) + [new_data]
                 out_writer.writerow(new_row)
+
+    with open("last_updated.txt", "a") as update_file:
+        update_file.write(f"{out_name} updated at {datetime.now(timezone.utc)} UTC\n")
+
+
+def main() -> None:
+    update_data()
+
+
+if __name__ == "__main__":
+    main()
