@@ -34,6 +34,7 @@ def retrieve_data(url: str, output_file: str) -> None:
 
 def create_new_pollid(in_csv: str) -> None:
     out_name: str = in_csv.rstrip(".csv") + "_modified.csv"
+    print(f"Updating {out_name} ...")
 
     in_file: typing.TextIO
     out_file: typing.TextIO
@@ -61,3 +62,14 @@ def create_new_pollid(in_csv: str) -> None:
                 new_data: str = row["poll_id"] + str(current_index)
                 new_row: list[str] = list(row.values()) + [new_data]
                 out_writer.writerow(new_row)
+
+    with open("last_updated.txt", "a") as update_file:
+        update_file.write(f"{out_name} updated at {datetime.now(timezone.utc)} UTC\n")
+
+
+def main() -> None:
+    update_data()
+
+
+if __name__ == "__main__":
+    main()
