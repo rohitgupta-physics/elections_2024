@@ -1,3 +1,6 @@
+pollster_rating.csv updated at 2024-04-01 03:42:33.444465+00:00 UTC
+general_election_biden_vs_trump_modified.csv updated at 2024-04-01 03:42:32.796813+00:00 UTC
+general_election_biden_vs_trump.csv updated at 2024-04-01 03:42:32.685299+00:00 UTC
 pollster_rating.csv updated at 2024-03-30 17:15:26.115960+00:00 UTC
 general_election_biden_vs_trump_modified.csv updated at 2024-03-30 17:15:25.781454+00:00 UTC
 general_election_biden_vs_trump.csv updated at 2024-03-30 17:15:25.667250+00:00 UTC

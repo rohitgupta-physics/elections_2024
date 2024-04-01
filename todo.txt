@@ -1,2 +1,5 @@
-# add documentation
+# implement date function in poll class
+# implement average function in analyse_polls
+# add documentation to update
+# add documentation to pollster class
 # Licensing?

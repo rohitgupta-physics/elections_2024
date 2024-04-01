@@ -1,6 +1,7 @@
 import typing
 import csv
 from pollster_class import Pollster
+from datetime import date
 
 
 def get_poll_ids(csv_file: str):
@@ -90,7 +91,9 @@ class Poll:
             raise ValueError("Not a valid poll id")
 
     def __str__(self) -> str:
-        return f"Poll conducted by {self.get_pollster_name()}\n {self.get_polling_numbers()}"
+        return f"""Poll conducted by {self.get_pollster_name()}:
+Started on {self.get_start_date()} and ended on {self.get_end_date()}. 
+{self.get_polling_numbers()}"""
 
     def get_pollster_name(self) -> str:
         """Returns the name of the pollster from the pollster_rating.csv file
@@ -103,9 +106,37 @@ class Poll:
 
         return self.pollster.get_name()
 
-    # TODO: Implement this function
-    def get_polling_date(self):
-        pass
+    def get_start_date(self) -> date:
+        """Returns the starting date of the poll in the format specified by the datetime module.
+        See examples.py for more details
+
+        Returns
+        -------
+        date
+            Starting date
+        """
+
+        start_date_str: str = self._data[0]["start_date"]
+        start_month_str, start_day_str, start_year_str = start_date_str.split("/")
+        start_date = date(
+            int(start_year_str) + 2000, int(start_month_str), int(start_day_str)
+        )
+        return start_date
+
+    def get_end_date(self) -> date:
+        """Returns the ending date of the poll in the format specified by the datetime module.
+        See examples.py for more details
+
+        Returns
+        -------
+        date
+            Ending date
+        """
+
+        end_date_str: str = self._data[0]["end_date"]
+        end_month_str, end_day_str, end_year_str = end_date_str.split("/")
+        end_date = date(int(end_year_str) + 2000, int(end_month_str), int(end_day_str))
+        return end_date
 
     def get_candidate_names(self) -> list[str]:
         """List of candidate names which are included in poll
@@ -136,5 +167,6 @@ class Poll:
 
 if __name__ == "__main__":
     poll_id_generator = get_poll_ids("general_election_biden_vs_trump_modified.csv")
-    for poll_id in poll_id_generator:
-        print(poll_id)
+    poll_id = next(poll_id_generator)
+    poll = Poll(poll_id, "general_election_biden_vs_trump_modified.csv")
+    print(poll.get_start_date())
