@@ -1,4 +1,5 @@
-# implement date function in poll class
+# add tests to the poll class
+# implement a way of creating pollster class instance using pollster name
 # implement average function in analyse_polls
 # add documentation to update
 # add documentation to pollster class
