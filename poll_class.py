@@ -4,7 +4,7 @@ from pollster_class import Pollster
 from datetime import date
 
 
-def get_poll_ids(csv_file: str) -> typing.Generator[str, None, None]:
+def get_poll_ids(csv_file: str) -> typing.Iterator[str]:
     """Generates a generator of poll ids for use in Poll class
 
     Parameters
