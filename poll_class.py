@@ -3,8 +3,8 @@ import csv
 from pollster_class import Pollster
 
 
-def get_poll_ids(csv_file: str) -> list[str]:
-    """Generates a list of poll ids for use in Poll class
+def get_poll_ids(csv_file: str):
+    """Generates a generator of poll ids for use in Poll class
 
     Parameters
     ----------
@@ -14,8 +14,12 @@ def get_poll_ids(csv_file: str) -> list[str]:
 
     Returns
     -------
-    list[str]
-        A list of valid poll ids
+    Generator
+        A generator that can be used in a loop.
+        Example:
+        poll_id_generator = get_poll_ids("general_election_biden_vs_trump_modified.csv")
+        for poll_id in poll_id_generator:
+            print(poll_id)
 
     Raises
     ------
@@ -25,15 +29,18 @@ def get_poll_ids(csv_file: str) -> list[str]:
 
     if not csv_file.endswith("modified.csv"):
         raise ValueError("Not a valid csv file")
-    ans: list[str] = list()
+
+    current_poll_id: str = ""
+
     file: typing.TextIO
     with open(csv_file) as file:
         reader: csv.DictReader[str] = csv.DictReader(file)
         row: dict[str, str]
         for row in reader:
-            if row["new_poll_id"] not in ans:
-                ans.append(row["new_poll_id"])
-    return ans
+            updated_poll_id = row["new_poll_id"]
+            if updated_poll_id != current_poll_id:
+                current_poll_id = updated_poll_id
+                yield current_poll_id
 
 
 class Poll:
@@ -82,6 +89,9 @@ class Poll:
         if self.new_poll_id == "":
             raise ValueError("Not a valid poll id")
 
+    def __str__(self) -> str:
+        return f"Poll conducted by {self.get_pollster_name()}\n {self.get_polling_numbers()}"
+
     def get_pollster_name(self) -> str:
         """Returns the name of the pollster from the pollster_rating.csv file
 
@@ -92,6 +102,10 @@ class Poll:
         """
 
         return self.pollster.get_name()
+
+    # TODO: Implement this function
+    def get_polling_date(self):
+        pass
 
     def get_candidate_names(self) -> list[str]:
         """List of candidate names which are included in poll
@@ -121,6 +135,6 @@ class Poll:
 
 
 if __name__ == "__main__":
-    poll = Poll("865580", "general_election_biden_vs_trump_modified.csv")
-    print(poll.get_polling_numbers())
-    print(get_poll_ids("general_election_biden_vs_trump_modified.csv"))
+    poll_id_generator = get_poll_ids("general_election_biden_vs_trump_modified.csv")
+    for poll_id in poll_id_generator:
+        print(poll_id)
