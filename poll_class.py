@@ -4,7 +4,7 @@ from pollster_class import Pollster
 from datetime import date
 
 
-def get_poll_ids(csv_file: str):
+def get_poll_ids(csv_file: str) -> typing.Generator[str, None, None]:
     """Generates a generator of poll ids for use in Poll class
 
     Parameters
@@ -17,10 +17,6 @@ def get_poll_ids(csv_file: str):
     -------
     Generator
         A generator that can be used in a loop.
-        Example:
-        poll_id_generator = get_poll_ids("general_election_biden_vs_trump_modified.csv")
-        for poll_id in poll_id_generator:
-            print(poll_id)
 
     Raises
     ------
