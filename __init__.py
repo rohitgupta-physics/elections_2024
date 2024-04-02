@@ -1,9 +1,3 @@
-from update import update_data
+import sys
 
-
-def main() -> None:
-    update_data()
-
-
-if __name__ == "__main__":
-    main()
+sys.path.append(".")

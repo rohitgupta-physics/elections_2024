@@ -75,16 +75,19 @@ class Poll:
 
         # adds all the polling data that matches the given poll id and raised a ValueError if the poll id is not present in the csv file
         file: typing.TextIO
-        with open(filename) as file:
-            reader: csv.DictReader[str] = csv.DictReader(file)
-            row: dict[str, str]
-            for row in reader:
-                if row["new_poll_id"] == new_poll_id:
-                    self.new_poll_id = new_poll_id
-                    self._data.append(row)
-                    self.pollster = Pollster(row["pollster_rating_id"])
-        if self.new_poll_id == "":
-            raise ValueError("Not a valid poll id")
+        try:
+            with open(filename) as file:
+                reader: csv.DictReader[str] = csv.DictReader(file)
+                row: dict[str, str]
+                for row in reader:
+                    if row["new_poll_id"] == new_poll_id:
+                        self.new_poll_id = new_poll_id
+                        self._data.append(row)
+                        self.pollster = Pollster(row["pollster_rating_id"])
+            if self.new_poll_id == "":
+                raise ValueError("Not a valid poll id")
+        except IOError:
+            raise ValueError("File not found")
 
     def __str__(self) -> str:
         return f"""Poll conducted by {self.get_pollster_name()}:
